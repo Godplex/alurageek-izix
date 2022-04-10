@@ -1,0 +1,199 @@
+body {
+    font-family: 'Raleway', sans-serif !important;
+}
+
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+}
+
+#contact {
+    background-color: lighten($color: $primary, $amount: 40)
+}
+
+.logo-contact {
+    width: 176px;
+    height: 50px;
+}
+
+#banner {
+    width: 100%;
+    height: 452px;
+    background: url("../../assets/banner.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+@media (max-width: 576px) {
+
+    #banner {
+        width: 100%;
+        height: 292px;
+        background: url("../../assets/banner.jpg");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+}
+
+.banner {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: -moz-linear-gradient(180deg, rgba(0, 0, 0, 0) 41.15%, rgba(0, 0, 0, 0.8) 100%);
+    background: -webkit-linear-gradient(180deg, rgba(0, 0, 0, 0) 41.15%, rgba(0, 0, 0, 0.8) 100%);
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 41.15%, rgba(0, 0, 0, 0.8) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#000000", endColorstr="#000000", GradientType=1);
+}
+
+.search {
+    border-radius: 50px !important;
+    background-color: $secondary !important;
+}
+
+.Icon-inside {
+    position: relative;
+}
+
+.Icon-inside i {
+    position: absolute;
+    right: 25px;
+    top: 1px;
+    padding: 10px 10px;
+    color: darken($color: $secondary, $amount: 32);
+}
+
+.icon {
+    color: darken($color: $secondary, $amount: 68);
+}
+
+.logo {
+    width: 176px;
+    height: 50px;
+}
+
+@media (max-width: 992px) {
+
+    .logo {
+        width: 100px;
+        height: 28px;
+    }
+
+}
+
+.form-control-lg {
+    font-size: 1rem;
+}
+
+.form-row {
+
+    position: relative;
+
+    input {
+
+        +label[data-placeholder] {
+            pointer-events: none;
+            color: darken($color: $secondary, $amount: 40);
+
+            &:after {
+                content: attr(data-placeholder);
+                display: block;
+                position: absolute;
+                top: 35%;
+                left: 1rem;
+                transform: translate(0%, -50%);
+                transition: all 0.5s ease-in-out;
+                padding: 0 0.25rem;
+                background-color: rgba(255, 255, 255, 0);
+            }
+
+        }
+
+        &:focus,
+        &:valid {
+
+            +label[data-placeholder] {
+                &:after {
+                    transform: translate(-10%, -110%) scale(0.8, 0.8);
+                    color: darken($color: $secondary, $amount: 40);
+                    background-color: rgba(255, 255, 255, 0);
+                }
+
+            }
+
+        }
+
+    }
+
+}
+
+.img-product {
+    width: 100%;
+    height: 403px;
+    object-fit: cover;
+}
+
+@media (max-width: 992px) {
+
+    .img-product {
+        width: 100%;
+        height: 157px;
+    }
+
+}
+
+@media (max-width: 768px) {
+
+    .img-product {
+        width: 100%;
+        height: 192px;
+    }
+
+}
+
+.product {
+    position: relative;
+}
+
+.delete {
+    position: absolute;
+    top: 12%;
+    right: 30%;
+}
+
+.edit {
+    position: absolute;
+    top: 12%;
+    right: 10%;
+}
+
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.inputfile + label {
+    color:darken($color: $secondary, $amount: 30);
+    background-color: white;
+    display: inline-block;
+    width: 100%;
+    border: darken($color: $secondary, $amount: 20) 2px dashed;
+}
+
+.inputfile + label {
+	cursor: pointer; /* "hand" cursor */
+}
+
+.inputfile + label * {
+	pointer-events: none;
+}
