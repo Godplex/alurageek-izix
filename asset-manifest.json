@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/alurageek-izix/static/css/main.46361777.css",
-    "main.js": "/alurageek-izix/static/js/main.78ee194b.js",
+    "main.js": "/alurageek-izix/static/js/main.a6c51cc4.js",
     "static/media/banner.jpg": "/alurageek-izix/static/media/banner.600254d5ef0bead20644.jpg",
     "static/media/control-xyz-1.png": "/alurageek-izix/static/media/control-xyz-1.91126b3b8913da9682ab.png",
     "static/media/atari-shirt-1.png": "/alurageek-izix/static/media/atari-shirt-1.4d9ae66c3d00a1361a50.png",
@@ -27,10 +27,10 @@
     "static/media/slick.woff": "/alurageek-izix/static/media/slick.295183786cd8a1389865.woff",
     "index.html": "/alurageek-izix/index.html",
     "main.46361777.css.map": "/alurageek-izix/static/css/main.46361777.css.map",
-    "main.78ee194b.js.map": "/alurageek-izix/static/js/main.78ee194b.js.map"
+    "main.a6c51cc4.js.map": "/alurageek-izix/static/js/main.a6c51cc4.js.map"
   },
   "entrypoints": [
     "static/css/main.46361777.css",
-    "static/js/main.78ee194b.js"
+    "static/js/main.a6c51cc4.js"
   ]
 }
