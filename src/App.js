@@ -1,7 +1,7 @@
 import {
-  BrowserRouter,
   Routes,
   Route,
+  HashRouter,
 } from "react-router-dom";
 import { AddProductPage } from "./pages/addproduct/AddProductPage";
 import { HomePage } from "./pages/home/HomePage";
@@ -11,11 +11,11 @@ import { ProductsPage } from "./pages/products/ProductsPage";
 
 export const App = () => {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="category/:title/product/:productId" element={<ProductPage />} />
+        <Route path="/category/:title/product/:productId" element={<ProductPage />} />
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/add-product" element={<AddProductPage />} />
         <Route
@@ -23,8 +23,10 @@ export const App = () => {
           element={
             <main style={{ padding: "1rem" }}>
               <p>There's nothing here!</p>
-            </main>} />
+            </main>
+          }
+        />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   )
 }

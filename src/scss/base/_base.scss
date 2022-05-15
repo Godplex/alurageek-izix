@@ -54,7 +54,7 @@ body {
 
 .search {
     border-radius: 50px !important;
-    background-color: $secondary !important;
+    background-color: $secondary  !important;
 }
 
 .Icon-inside {
@@ -173,27 +173,16 @@ body {
     right: 10%;
 }
 
-.inputfile {
-	width: 0.1px;
-	height: 0.1px;
-	opacity: 0;
-	overflow: hidden;
-	position: absolute;
-	z-index: -1;
-}
-
-.inputfile + label {
-    color:darken($color: $secondary, $amount: 30);
-    background-color: white;
-    display: inline-block;
-    width: 100%;
-    border: darken($color: $secondary, $amount: 20) 2px dashed;
-}
-
-.inputfile + label {
-	cursor: pointer; /* "hand" cursor */
-}
-
-.inputfile + label * {
-	pointer-events: none;
+.dropzone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px;
+    border-width: 2px;
+    border-radius: 2px;
+    border-color: #c2c2c2;
+    border-style: dashed;
+    background-color: #fafafa;
+    color: #c2c2c2;
+    transition: border .3s ease-in-out;
 }
