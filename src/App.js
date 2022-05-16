@@ -1,8 +1,10 @@
+import { useState } from "react";
 import {
   Routes,
   Route,
   HashRouter,
 } from "react-router-dom";
+import firebaseApp from "./firebaseconf";
 import { AddProductPage } from "./pages/addproduct/AddProductPage";
 import { HomePage } from "./pages/home/HomePage";
 import { LoginPage } from "./pages/login/LoginPage";
@@ -10,6 +12,7 @@ import { ProductPage } from "./pages/product/ProductPage";
 import { ProductsPage } from "./pages/products/ProductsPage";
 
 export const App = () => {
+
   return (
     <HashRouter>
       <Routes>

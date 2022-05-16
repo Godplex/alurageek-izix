@@ -151,15 +151,15 @@ export const AddProduct = () => {
                             </div>
                             <div className="col-12 mt-4">
                                 <div className="form-row">
-                                    <input type="text" name="product" className="form-control form-control-lg py-3" maxLength={20} value={toCreate.product} onChange={handleChange} />
+                                    <input type="text" name="product" className="form-control form-control-lg py-3" maxLength={20} value={toCreate.product} onChange={handleChange} required/>
                                     <label alt="Label" data-placeholder="Nombre del producto"></label>
                                 </div>
                                 <div className="form-row">
-                                    <input type="number" name="price" className="form-control form-control-lg py-3" value={toCreate.price} onChange={handleChange} />
+                                    <input type="number" name="price" className="form-control form-control-lg py-3" value={toCreate.price} onChange={handleChange} required/>
                                     <label alt="Label" data-placeholder="Precio del producto"></label>
                                 </div>
                                 <textarea type="text" name="description" className="form-control form-control-lg mb-3 pt-3" placeholder="Descripcion del producto" rows={3} maxLength={150}
-                                    value={toCreate.description} onChange={handleChange}></textarea>
+                                    value={toCreate.description} onChange={handleChange} required></textarea>
                                 <button type="submit" className="btn btn-primary w-100 py-3 mt-3">Agregar producto</button>
                             </div>
                         </form>

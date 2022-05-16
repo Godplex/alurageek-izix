@@ -1,5 +1,28 @@
 import React, { useState } from 'react'
 import Swal from 'sweetalert2';
+import firebaseApp from '../../firebaseconf';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+
+const auth = getAuth(firebaseApp);
+
+const loginUser = async (email, password) => {
+    Swal.fire({
+        title: 'Cargando...',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+    await signInWithEmailAndPassword(auth, email, password)
+        .then((resp) => {
+            console.log(resp);
+        }).catch((err) => {
+            console.log(err);
+        }).finally(() => {
+            Swal.close();
+        });
+}
 
 export const Login = () => {
 
@@ -19,7 +42,6 @@ export const Login = () => {
     };
 
     const handleChange = (e) => {
-        console.log(e.target.name, e.target.value);
         if (e.target.name === 'email') {
             setToPattern(pattern.test(e.target.value));
         }
@@ -31,15 +53,16 @@ export const Login = () => {
 
         if (toLogin.email && toLogin.password) {
 
-            resetForm();
-
-            Swal.fire({
-                position: 'top-end',
-                icon: 'success',
-                title: 'Logueado con exito.',
-                showConfirmButton: false,
-                timer: 1500
-            })
+            if (pattern.test(toLogin.email)) {
+                resetForm();
+                loginUser(toLogin.email, toLogin.password);
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'El email no es válido',
+                    icon: 'error',
+                });
+            }
 
         } else {
             Swal.fire({
@@ -59,18 +82,18 @@ export const Login = () => {
                         <h5 className="fw-bolder">Iniciar Sesión</h5>
                         <div className="form-row">
                             <input type="email" name="email" className={`form-control form-control-lg py-3 mt-3 ${(!toPattern && toLogin.email.length > 0) ? 'is-invalid' : ''}`}
-                                value={toLogin.email} onChange={handleChange} required/>
+                                value={toLogin.email} onChange={handleChange} required />
                             <label alt="Label" data-placeholder="Escriba su correo electronico"></label>
                         </div>
                         <div className="form-row">
-                            <input type="password" name="password" className="form-control form-control-lg py-3" value={toLogin.password} onChange={handleChange} required/>
+                            <input type="password" name="password" className="form-control form-control-lg py-3" value={toLogin.password} onChange={handleChange} required />
                             <label alt="Label" data-placeholder="Escriba su contraseña"></label>
                         </div>
                         <button className="btn btn-primary py-3 col-5 col-lg-12" type="submit">Entrar</button>
                         {
                             (!toPattern && toLogin.email.length > 0)
                                 ?
-                                <div class="alert alert-dismissible alert-danger mt-4">
+                                <div className="alert alert-dismissible alert-danger mt-4">
                                     Ingrese una dirección de correo electronico valida.
                                 </div>
                                 :
