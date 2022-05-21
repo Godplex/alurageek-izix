@@ -33,7 +33,7 @@ export const Menu = () => {
                 {
                     (user)
                         ?
-                        <button className="btn btn-outline-primary d-flex px-4 px-lg-5 py-2" onClick={() => signOut(auth)}>Cerrar Sesión</button>
+                        <button className="btn btn-primary d-flex px-4 px-lg-5 py-2" onClick={() => signOut(auth)}>Cerrar sesión</button>
                         :
                         <Link to="/login" className="btn btn-outline-primary d-flex px-4 px-lg-5 py-2">Login</Link>
                 }

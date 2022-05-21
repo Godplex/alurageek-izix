@@ -8,7 +8,6 @@ import { Menu } from '../../components/menu/Menu'
 export const HomePage = () => {
     return (
         <>
-            <Menu />
             <Banner />
             {
                 categoryProducts.map(item => (
@@ -18,8 +17,6 @@ export const HomePage = () => {
                     />
                 ))
             }
-            <Contact />
-            <Footer />
         </>
     )
 }

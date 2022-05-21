@@ -47,7 +47,7 @@ export const AllProducts = () => {
                     <h2 className="display-5 fw-bolder text-capitalize">
                         Todos los productos
                     </h2>
-                    <Link to="/add-product" className="btn btn-primary p-3">
+                    <Link to="/admin/add-product" className="btn btn-primary p-3">
                         Agregar producto
                     </Link>
                 </div>

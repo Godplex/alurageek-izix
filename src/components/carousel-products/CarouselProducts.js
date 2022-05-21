@@ -45,7 +45,7 @@ export const CarouselProducts = ({ title, products }) => {
           {
             (title !== "productos similares")
               ?
-              <Link to="/products" className="text-decoration-none text-primary fw-bolder">
+              <Link to="/admin/products" className="text-decoration-none text-primary fw-bolder">
                 Ver todo <i className="fa-solid fa-arrow-right"></i>
               </Link>
               :

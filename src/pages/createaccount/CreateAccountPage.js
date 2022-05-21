@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom';
+import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 import Swal from 'sweetalert2';
 import firebaseApp from '../../firebaseconf';
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
-import { Link, useNavigate } from 'react-router-dom';
 const auth = getAuth(firebaseApp);
 
-export const Login = () => {
+export const CreateAccountPage = () => {
 
     let navigate = useNavigate();
 
@@ -17,7 +17,7 @@ export const Login = () => {
         });
     }, []);
 
-    const loginUser = async (email, password) => {
+    const createUser = async (email, password) => {
         Swal.fire({
             title: 'Cargando...',
             allowOutsideClick: false,
@@ -26,25 +26,25 @@ export const Login = () => {
                 Swal.showLoading();
             }
         });
-        await signInWithEmailAndPassword(auth, email, password)
+        await createUserWithEmailAndPassword(auth, email, password)
             .then(() => {
                 Swal.close();
                 navigate('/');
             }).catch(({ code }) => {
                 Swal.close();
                 switch (code) {
-                    case "auth/user-not-found":
+                    case "auth/weak-password":
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
-                            text: 'Esta cuenta no existe!',
+                            text: 'Contraseña demasiado corta!',
                         });
                         break;
-                    case "auth/wrong-password":
+                    case "auth/email-already-in-use":
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
-                            text: 'Usuario o contraseña incorrectos!',
+                            text: 'Este correo electronico ya esta en uso!',
                         });
                         break;
                     case "auth/too-many-requests":
@@ -88,7 +88,7 @@ export const Login = () => {
         if (toLogin.email && toLogin.password) {
 
             if (pattern.test(toLogin.email)) {
-                loginUser(toLogin.email, toLogin.password);
+                createUser(toLogin.email, toLogin.password);
             } else {
                 Swal.fire({
                     title: 'Error',
@@ -112,7 +112,7 @@ export const Login = () => {
             <div className="container py-2">
                 <div className="d-md-flex flex-column justify-content-center align-items-center">
                     <form className="col-md-6 col-lg-5 text-center" onSubmit={onSubmit}>
-                        <h5 className="fw-bolder">Iniciar Sesión</h5>
+                        <h5 className="fw-bolder">Crear cuenta</h5>
                         <div className="form-row">
                             <input type="email" name="email" className={`form-control form-control-lg py-3 mt-3 ${(!toPattern && toLogin.email.length > 0) ? 'is-invalid' : ''}`}
                                 value={toLogin.email} onChange={handleChange} required />
@@ -122,7 +122,7 @@ export const Login = () => {
                             <input type="password" name="password" className="form-control form-control-lg py-3" value={toLogin.password} onChange={handleChange} required />
                             <label alt="Label" data-placeholder="Escriba su contraseña"></label>
                         </div>
-                        <button className="btn btn-primary py-3 col-5 col-lg-12" type="submit">Entrar</button>
+                        <button className="btn btn-primary py-3 col-5 col-lg-12" type="submit">Crear</button>
                         {
                             (!toPattern && toLogin.email.length > 0)
                             &&
@@ -134,7 +134,7 @@ export const Login = () => {
                     <div className="text-center mt-4">
                         <Link to="/resetPassword" className="text-primary text-decoration-none">¿Olvidaste tu contraseña?</Link>
                         <p className="mb-0">o</p>
-                        <Link to="/createAccount" className="text-primary text-decoration-none">¿No tienes una cuenta?</Link>
+                        <Link to="/login" className="text-primary text-decoration-none">Ya tengo una cuenta</Link>
                     </div>
                 </div>
             </div>

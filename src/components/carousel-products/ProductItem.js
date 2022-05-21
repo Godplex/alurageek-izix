@@ -7,7 +7,7 @@ export const ProductItem = ({ id, name, image, title }) => {
             <img src={image} className="w-100" />
             <h6 className="mt-3 mb-2 text-truncate">{name}</h6>
             <p className="m-0 fw-bolder">$ 60.00</p>
-            <Link to={`/category/${title}/product/${id}`} className="text-decoration-none text-primary fw-bolder">Ver producto</Link>
+            <Link to={`/admin/category/${title}/product/${id}`} className="text-decoration-none text-primary fw-bolder">Ver producto</Link>
         </div>
     )
 }

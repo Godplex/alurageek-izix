@@ -2,34 +2,54 @@ import { useState } from "react";
 import {
   Routes,
   Route,
-  HashRouter,
 } from "react-router-dom";
-import firebaseApp from "./firebaseconf";
-import { AddProductPage } from "./pages/addproduct/AddProductPage";
 import { HomePage } from "./pages/home/HomePage";
+import { DashboardPrivateRoutes } from "./routers/DashboardPrivateRoutes";
+import PrivateRoute from "./routers/PrivateRoute";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import firebaseApp from "./firebaseconf";
 import { LoginPage } from "./pages/login/LoginPage";
-import { ProductPage } from "./pages/product/ProductPage";
-import { ProductsPage } from "./pages/products/ProductsPage";
+import { NotFoundPage } from "./pages/notfound/NotFoundPage";
+import { Menu } from "./components/menu/Menu";
+import { Contact } from "./components/contact/Contact";
+import { Footer } from "./components/footer/Footer";
+import { CreateAccountPage } from "./pages/createaccount/CreateAccountPage";
+import { ResetPasswordPage } from "./pages/resetpassword/ResetPasswordPage";
+const auth = getAuth(firebaseApp);
 
 export const App = () => {
 
+  const [user, setUser] = useState(null);
+
+  onAuthStateChanged(auth, (userFirebase) => {
+    if (userFirebase) {
+      setUser(userFirebase);
+    } else {
+      setUser(null);
+    }
+  });
+
   return (
-    <HashRouter>
+    <>
+      <Menu />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/category/:title/product/:productId" element={<ProductPage />} />
-        <Route path="/products" element={<ProductsPage />} />
-        <Route path="/add-product" element={<AddProductPage />} />
+        <Route path="/createAccount" element={<CreateAccountPage />} />
+        <Route path="/resetPassword" element={<ResetPasswordPage />} />
+        {/* Private Route */}
         <Route
-          path="*"
+          path="/admin/*"
           element={
-            <main style={{ padding: "1rem" }}>
-              <p>There's nothing here!</p>
-            </main>
+            <PrivateRoute user={user}>
+              <DashboardPrivateRoutes />
+            </PrivateRoute>
           }
         />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
-    </HashRouter>
+      <Contact />
+      <Footer />
+    </>
   )
 }
