@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import firebaseApp from '../../firebaseconf';
 const auth = getAuth(firebaseApp);
+auth.languageCode = 'es';
 
 export const ResetPasswordPage = () => {
 
@@ -28,6 +29,7 @@ export const ResetPasswordPage = () => {
         });
         await sendPasswordResetEmail(auth, email)
             .then(() => {
+                clearState();
                 Swal.close();
                 Swal.fire({
                     position: 'top-end',
@@ -65,6 +67,10 @@ export const ResetPasswordPage = () => {
 
     const [toLogin, setToLogin] = useState(initialState);
     const [toPattern, setToPattern] = useState(false);
+
+    const clearState = () => {
+        setToLogin({ ...initialState });
+    };
 
     const handleChange = (e) => {
         if (e.target.name === 'email') {

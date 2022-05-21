@@ -4,6 +4,7 @@ import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from 'fir
 import Swal from 'sweetalert2';
 import firebaseApp from '../../firebaseconf';
 const auth = getAuth(firebaseApp);
+auth.languageCode = 'es';
 
 export const CreateAccountPage = () => {
 
@@ -30,7 +31,8 @@ export const CreateAccountPage = () => {
             .then(() => {
                 Swal.close();
                 navigate('/');
-            }).catch(({ code }) => {
+            }).catch(({ code,message }) => {
+                console.log(message);
                 Swal.close();
                 switch (code) {
                     case "auth/weak-password":
