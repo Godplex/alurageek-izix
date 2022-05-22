@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
-import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
+import { createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 import Swal from 'sweetalert2';
-import firebaseApp from '../../firebaseconf';
-const auth = getAuth(firebaseApp);
-auth.languageCode = 'es';
+import { auth } from '../../firebaseconf';
 
 export const CreateAccountPage = () => {
 
@@ -32,7 +30,6 @@ export const CreateAccountPage = () => {
                 Swal.close();
                 navigate('/');
             }).catch(({ code,message }) => {
-                console.log(message);
                 Swal.close();
                 switch (code) {
                     case "auth/weak-password":

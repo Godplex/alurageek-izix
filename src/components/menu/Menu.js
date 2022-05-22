@@ -1,10 +1,8 @@
 import { Link } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import { useState } from 'react';
-import firebaseApp from '../../firebaseconf';
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-
-const auth = getAuth(firebaseApp);
+import { auth } from '../../firebaseconf';
+import { onAuthStateChanged, signOut } from "firebase/auth";
 
 export const Menu = () => {
 

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import Swal from 'sweetalert2';
-import firebaseApp from '../../firebaseconf';
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../../firebaseconf';
+import { signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 import { Link, useNavigate } from 'react-router-dom';
-const auth = getAuth(firebaseApp);
 
 export const Login = () => {
 

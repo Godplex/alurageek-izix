@@ -6,8 +6,8 @@ import {
 import { HomePage } from "./pages/home/HomePage";
 import { DashboardPrivateRoutes } from "./routers/DashboardPrivateRoutes";
 import PrivateRoute from "./routers/PrivateRoute";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import firebaseApp from "./firebaseconf";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebaseconf";
 import { LoginPage } from "./pages/login/LoginPage";
 import { NotFoundPage } from "./pages/notfound/NotFoundPage";
 import { Menu } from "./components/menu/Menu";
@@ -15,7 +15,6 @@ import { Contact } from "./components/contact/Contact";
 import { Footer } from "./components/footer/Footer";
 import { CreateAccountPage } from "./pages/createaccount/CreateAccountPage";
 import { ResetPasswordPage } from "./pages/resetpassword/ResetPasswordPage";
-const auth = getAuth(firebaseApp);
 
 export const App = () => {
 

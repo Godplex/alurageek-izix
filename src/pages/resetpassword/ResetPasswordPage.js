@@ -1,10 +1,8 @@
-import { getAuth, onAuthStateChanged, sendPasswordResetEmail } from 'firebase/auth';
+import { onAuthStateChanged, sendPasswordResetEmail } from 'firebase/auth';
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import firebaseApp from '../../firebaseconf';
-const auth = getAuth(firebaseApp);
-auth.languageCode = 'es';
+import { auth } from '../../firebaseconf';
 
 export const ResetPasswordPage = () => {
 
@@ -34,13 +32,20 @@ export const ResetPasswordPage = () => {
                 Swal.fire({
                     position: 'top-end',
                     icon: 'success',
-                    title: 'Revisa tu correo electronico!',
+                    title: 'Revisa tu correo!',
                     showConfirmButton: false,
                     timer: 1500
                 })
             }).catch(({ code }) => {
                 Swal.close();
                 switch (code) {
+                    case "auth/user-not-found":
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Esta cuenta no existe!',
+                        });
+                        break;
                     case "auth/too-many-requests":
                         Swal.fire({
                             icon: 'error',
