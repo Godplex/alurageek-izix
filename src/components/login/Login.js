@@ -111,24 +111,17 @@ export const Login = () => {
             <div className="container py-2">
                 <div className="d-md-flex flex-column justify-content-center align-items-center">
                     <form className="col-md-6 col-lg-5 text-center" onSubmit={onSubmit}>
-                        <h5 className="fw-bolder">Iniciar Sesión</h5>
-                        <div className="form-row">
-                            <input type="email" name="email" className={`form-control form-control-lg py-3 mt-3 ${(!toPattern && toLogin.email.length > 0) ? 'is-invalid' : ''}`}
-                                value={toLogin.email} onChange={handleChange} required />
-                            <label alt="Label" data-placeholder="Escriba su correo electronico"></label>
+                        <h5 className="fw-bolder mb-3">Iniciar Sesión</h5>
+                        <div className="form-floating mb-3">
+                            <input type="email" name="email" className={`form-control ${(!toPattern && toLogin.email.length > 0) && 'is-invalid'}`} id="floatingInputEmail" placeholder="Escriba su correo electronico" value={toLogin.email} onChange={handleChange} required />
+                            <label htmlFor="floatingInputEmail">Escriba su correo electronico</label>
+                            <div className="invalid-feedback"><small>Ingrese una dirección de correo electronico valida.</small></div>
                         </div>
-                        <div className="form-row">
-                            <input type="password" name="password" className="form-control form-control-lg py-3" value={toLogin.password} onChange={handleChange} required />
-                            <label alt="Label" data-placeholder="Escriba su contraseña"></label>
+                        <div className="form-floating mb-3">
+                            <input type="password" name="password" className="form-control" id="floatingInputPassword" placeholder="Escriba su contraseña" value={toLogin.password} onChange={handleChange} required />
+                            <label htmlFor="floatingInputPassword">Escriba su contraseña</label>
                         </div>
                         <button className="btn btn-primary py-3 col-5 col-lg-12" type="submit">Entrar</button>
-                        {
-                            (!toPattern && toLogin.email.length > 0)
-                            &&
-                            <div className="alert alert-dismissible alert-danger mt-4">
-                                Ingrese una dirección de correo electronico valida.
-                            </div>
-                        }
                     </form>
                     <div className="text-center mt-4">
                         <Link to="/resetPassword" className="text-primary text-decoration-none">¿Olvidaste tu contraseña?</Link>

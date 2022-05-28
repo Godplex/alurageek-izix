@@ -25,6 +25,8 @@ export const Contact = () => {
 
         if (toSend.name && toSend.message) {
 
+            console.log(toSend);
+
             resetForm();
 
             Swal.fire({
@@ -63,12 +65,15 @@ export const Contact = () => {
                         </div>
                     </div>
                     <form className="col-md-7 col-lg-6" onSubmit={onSubmit}>
-                        <h6 className="fw-bolder">Hable con nosotros</h6>
-                        <div className="form-row">
-                            <input type="name" name="name" className="form-control form-control-lg py-3 mt-3" maxLength={40} value={toSend.name} onChange={handleChange} required />
-                            <label alt="Label" data-placeholder="Nombre"></label>
+                        <h6 className="fw-bolder mb-3">Hable con nosotros</h6>
+                        <div className="form-floating mb-3">
+                            <input type="name" name="name" className="form-control" id="floatingInputName" placeholder="Nombre" maxLength={40} value={toSend.name} onChange={handleChange} required />
+                            <label htmlFor="floatingInputName">Nombre</label>
                         </div>
-                        <textarea type="text" name="message" className="form-control form-control-lg mb-3 pt-3" placeholder="Escribe tu mensaje" rows={2} maxLength={120} value={toSend.message} onChange={handleChange} required></textarea>
+                        <div className="form-floating mb-3">
+                            <textarea type="text" name="message" className="form-control" placeholder="Escribe tu mensaje" id="floatingTextareaMessage" style={{ height: 100 }} maxLength={120} value={toSend.message} onChange={handleChange} required></textarea>
+                            <label htmlFor="floatingTextareaMessage">Escribe tu mensaje</label>
+                        </div>
                         <button type="submit" className="btn btn-primary">Enviar mensaje</button>
                     </form>
                 </div>
