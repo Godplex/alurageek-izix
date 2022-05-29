@@ -1,7 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
-$primary:#2A7AE4;
-$secondary:#F5F5F5;
-$white:white;
+$primary: #2A7AE4;
+$secondary: #F5F5F5;
+$white: white;
+$form-floating-label-opacity: 1!important;
 @import "../../node_modules/bootswatch/dist/cosmo/variables";
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
 @import "../../node_modules/bootswatch/dist/cosmo/bootswatch";

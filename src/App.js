@@ -1,54 +1,33 @@
-import { useState } from "react";
-import {
-  Routes,
-  Route,
-} from "react-router-dom";
-import { HomePage } from "./pages/home/HomePage";
-import { DashboardPrivateRoutes } from "./routers/DashboardPrivateRoutes";
-import PrivateRoute from "./routers/PrivateRoute";
 import { onAuthStateChanged } from "firebase/auth";
+import { useEffect, useState } from "react";
+import { HashRouter } from "react-router-dom"
 import { auth } from "./firebaseconf";
-import { LoginPage } from "./pages/login/LoginPage";
-import { NotFoundPage } from "./pages/notfound/NotFoundPage";
-import { Menu } from "./components/menu/Menu";
-import { Contact } from "./components/contact/Contact";
-import { Footer } from "./components/footer/Footer";
-import { CreateAccountPage } from "./pages/createaccount/CreateAccountPage";
-import { ResetPasswordPage } from "./pages/resetpassword/ResetPasswordPage";
+import { LoadingPage } from "./pages/loading/LoadingPage";
+import { AppRouter } from "./routers/AppRouter"
+import ScrollToTop from './utils/ScrollToTop';
 
 export const App = () => {
 
-  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  onAuthStateChanged(auth, (userFirebase) => {
-    if (userFirebase) {
-      setUser(userFirebase);
-    } else {
-      setUser(null);
-    }
-  });
+  useEffect(() => {
+    onAuthStateChanged(auth, () => {
+      setIsLoading(false);
+      console.log(auth.currentUser);
+    });
+  }, []);
+
 
   return (
-    <>
-      <Menu />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/createAccount" element={<CreateAccountPage />} />
-        <Route path="/resetPassword" element={<ResetPasswordPage />} />
-        {/* Private Route */}
-        <Route
-          path="/admin/*"
-          element={
-            <PrivateRoute user={user}>
-              <DashboardPrivateRoutes />
-            </PrivateRoute>
-          }
-        />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
-      <Contact />
-      <Footer />
-    </>
+    <HashRouter>
+      <ScrollToTop />
+      {
+        (isLoading)
+          ?
+          <LoadingPage />
+          :
+          <AppRouter />
+      }
+    </HashRouter>
   )
 }
