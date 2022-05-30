@@ -1,6 +1,8 @@
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import Swal from 'sweetalert2';
+import { storage } from '../../firebaseconf';
 
 export const AddProduct = () => {
 
@@ -74,7 +76,66 @@ export const AddProduct = () => {
 
         if (files.length > 0 && toCreate.product && toCreate.price && toCreate.description && toCreate.category != 0) {
 
-            console.log(toCreate);
+            const storageRef = ref(storage, 'images/' + files[0].name);
+
+            uploadBytes(storageRef, files[0]).then((snapshot) => {
+                console.log(snapshot);
+
+                getDownloadURL(storageRef)
+                    .then((url) => {
+                        console.log(url)
+                    })
+                    .catch(({ code }) => {
+                        switch (code) {
+                            case 'storage/object-not-found':
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: 'Archivo no encontrado!',
+                                });
+                                break;
+                            case 'storage/unauthorized':
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: 'No tiene permiso para realizar esta acción!',
+                                });
+                                break;
+                            case 'storage/canceled':
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: 'Subida cancelada, intentelo de nuevo!',
+                                });
+                                break;
+                            case 'storage/unknown':
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: 'Error desconocido!',
+                                });
+                                break;
+                            default:
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: code,
+                                });
+                                break;
+                        }
+                    });
+
+            }).catch(({ code }) => {
+                switch (code) {
+                    default:
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: code,
+                        });
+                        break;
+                }
+            });
 
             resetForm();
 
