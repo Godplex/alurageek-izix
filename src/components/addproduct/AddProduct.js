@@ -74,6 +74,8 @@ export const AddProduct = () => {
 
         if (files.length > 0 && toCreate.product && toCreate.price && toCreate.description) {
 
+            console.log(toCreate);
+
             resetForm();
 
             Swal.fire({
@@ -150,16 +152,19 @@ export const AddProduct = () => {
                                 </div>
                             </div>
                             <div className="col-12 mt-4">
-                                <div className="form-row">
-                                    <input type="text" name="product" className="form-control form-control-lg py-3" maxLength={20} value={toCreate.product} onChange={handleChange} required/>
-                                    <label alt="Label" data-placeholder="Nombre del producto"></label>
+                                <div className="form-floating mb-3">
+                                    <input type="text" name="product" className="form-control" id="floatingInputProduct" placeholder="Nombre del producto" maxLength={20} value={toCreate.product} onChange={handleChange} required />
+                                    <label htmlFor="floatingInputProduct">Nombre del producto</label>
                                 </div>
-                                <div className="form-row">
-                                    <input type="number" name="price" className="form-control form-control-lg py-3" value={toCreate.price} onChange={handleChange} required/>
-                                    <label alt="Label" data-placeholder="Precio del producto"></label>
+                                <div className="form-floating mb-3">
+                                    <input type="number" name="price" className="form-control" id="floatingInputNumber" placeholder="Precio del producto" min={0} value={toCreate.price} onChange={handleChange} required />
+                                    <label htmlFor="floatingInputNumber">Precio del producto</label>
                                 </div>
-                                <textarea type="text" name="description" className="form-control form-control-lg mb-3 pt-3" placeholder="Descripcion del producto" rows={3} maxLength={150}
-                                    value={toCreate.description} onChange={handleChange} required></textarea>
+                                <div className="form-floating mb-3">
+                                    <textarea type="text" name="description" className="form-control" placeholder="Descripcion del producto" id="floatingTextareaDescritpion" style={{ height: 100 }} maxLength={150}
+                                        value={toCreate.description} onChange={handleChange} required></textarea>
+                                    <label htmlFor="floatingTextareaDescritpion">Descripcion del producto</label>
+                                </div>
                                 <button type="submit" className="btn btn-primary w-100 py-3 mt-3">Agregar producto</button>
                             </div>
                         </form>
