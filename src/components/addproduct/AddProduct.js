@@ -27,21 +27,17 @@ export const AddProduct = () => {
         }
     });
 
-    const removeFile = (file) => () => {
-        console.log(file)
+    const removeFile = () => () => {
         setFiles([]);
     }
 
     const thumbs = files.map(file => (
-        <div key={file.name} className="col-7 position-relative">
+        <div key={file.name} className="col-7">
             <img
                 src={file.preview}
                 alt={file.name}
-                className="w-100"
+                className="img-dropzone-product"
             />
-            <button onClick={removeFile(file)} className="position-absolute top-0 start-100 translate-middle rounded-circle bg-primary">
-                <i className="fa-solid fa-circle-xmark text-white"></i>
-            </button>
         </div>
     ));
 
@@ -53,6 +49,7 @@ export const AddProduct = () => {
     const [toCreate, setToCreate] = useState({
         product: '',
         price: '',
+        category: '0',
         description: ''
     });
 
@@ -61,6 +58,7 @@ export const AddProduct = () => {
         setToCreate({
             product: '',
             price: '',
+            category: '0',
             description: ''
         });
     };
@@ -72,7 +70,9 @@ export const AddProduct = () => {
     const onSubmit = (e) => {
         e.preventDefault();
 
-        if (files.length > 0 && toCreate.product && toCreate.price && toCreate.description) {
+        console.log(toCreate);
+
+        if (files.length > 0 && toCreate.product && toCreate.price && toCreate.description && toCreate.category != 0) {
 
             console.log(toCreate);
 
@@ -81,7 +81,7 @@ export const AddProduct = () => {
             Swal.fire({
                 position: 'top-end',
                 icon: 'success',
-                title: 'Su mensaje ha sido enviado.',
+                title: 'Su producto ha sido creado con existo.',
                 showConfirmButton: false,
                 timer: 1500
             })
@@ -105,7 +105,12 @@ export const AddProduct = () => {
                         <form className="row d-flex align-items-center pt-3" onSubmit={onSubmit}>
                             <div className="col-md-5 col-lg-7">
                                 <section>
-                                    <div {...getRootProps({ className: 'dropzone' })}>
+                                    <div className="d-flex justify-content-end">
+                                        <button type="button" className="btn btn-danger btn-sm rounded" onClick={removeFile()} disabled={files.length == 0}>
+                                            Eliminar <i className="fa-solid fa-trash-can"></i>
+                                        </button>
+                                    </div>
+                                    <div {...getRootProps({ className: 'dropzone' })} role="button">
                                         <input {...getInputProps()} />
                                         {
                                             (files.length <= 0)
@@ -120,7 +125,7 @@ export const AddProduct = () => {
                                                             </div>
                                                             :
                                                             <div>
-                                                                <i className="fa-solid fa-plus fa-2xl"></i>
+                                                                <i className="fa-solid fa-plus fa-3x"></i>
                                                                 <p className="pt-3 m-0">Agregar una imagen para el producto</p>
                                                             </div>
                                                     }
@@ -159,6 +164,15 @@ export const AddProduct = () => {
                                 <div className="form-floating mb-3">
                                     <input type="number" name="price" className="form-control" id="floatingInputNumber" placeholder="Precio del producto" min={0} value={toCreate.price} onChange={handleChange} required />
                                     <label htmlFor="floatingInputNumber">Precio del producto</label>
+                                </div>
+                                <div className="form-floating mb-3">
+                                    <select className="form-select" name="category" value={toCreate.category} onChange={handleChange} id="floatingSelect">
+                                        <option value="0" disabled>Seleccione una categoria</option>
+                                        <option value="1">Star Wars</option>
+                                        <option value="2">Consolas</option>
+                                        <option value="3">Diversos</option>
+                                    </select>
+                                    <label htmlFor="floatingSelect">Categoria del producto</label>
                                 </div>
                                 <div className="form-floating mb-3">
                                     <textarea type="text" name="description" className="form-control" placeholder="Descripcion del producto" id="floatingTextareaDescritpion" style={{ height: 100 }} maxLength={150}

@@ -91,7 +91,7 @@ body {
     font-size: 1rem;
 }
 
-.form-floating>label{
+.form-floating>label {
     color: darken($color: $secondary, $amount: 40) !important;
 }
 
@@ -147,4 +147,10 @@ body {
     background-color: #fafafa;
     color: #c2c2c2;
     transition: border .3s ease-in-out;
+}
+
+.img-dropzone-product {
+    width: 100%;
+    max-height: 220px;
+    object-fit: cover;
 }
