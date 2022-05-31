@@ -1,8 +1,9 @@
+import { addDoc, collection } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import Swal from 'sweetalert2';
-import { storage } from '../../firebaseconf';
+import { db, storage } from '../../firebaseconf';
 
 export const AddProduct = () => {
 
@@ -69,64 +70,66 @@ export const AddProduct = () => {
         setToCreate({ ...toCreate, [e.target.name]: e.target.value });
     };
 
-    const onSubmit = (e) => {
-        e.preventDefault();
+    const uploadImage = (storageRef, file) => {
+        uploadBytes(storageRef, file).then((resp) => {
 
-        console.log(toCreate);
+            console.log(resp)
+            getUrlImage(storageRef);
 
-        if (files.length > 0 && toCreate.product && toCreate.price && toCreate.description && toCreate.category != 0) {
-
-            const storageRef = ref(storage, 'images/' + files[0].name);
-
-            uploadBytes(storageRef, files[0]).then((snapshot) => {
-                console.log(snapshot);
-
-                getDownloadURL(storageRef)
-                    .then((url) => {
-                        console.log(url)
-                    })
-                    .catch(({ code }) => {
-                        switch (code) {
-                            case 'storage/object-not-found':
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Oops...',
-                                    text: 'Archivo no encontrado!',
-                                });
-                                break;
-                            case 'storage/unauthorized':
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Oops...',
-                                    text: 'No tiene permiso para realizar esta acción!',
-                                });
-                                break;
-                            case 'storage/canceled':
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Oops...',
-                                    text: 'Subida cancelada, intentelo de nuevo!',
-                                });
-                                break;
-                            case 'storage/unknown':
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Oops...',
-                                    text: 'Error desconocido!',
-                                });
-                                break;
-                            default:
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Oops...',
-                                    text: code,
-                                });
-                                break;
-                        }
+        }).catch(({ code }) => {
+            Swal.close();
+            switch (code) {
+                default:
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: code,
                     });
+                    break;
+            }
+        });
+    }
 
-            }).catch(({ code }) => {
+    const getUrlImage = async (storageRef) => {
+        getDownloadURL(storageRef)
+            .then((url) => {
+
+                console.log(storageRef);
+
+                uploadData(url, storageRef);
+
+            })
+            .catch(({ code }) => {
+                Swal.close();
                 switch (code) {
+                    case 'storage/object-not-found':
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Archivo no encontrado!',
+                        });
+                        break;
+                    case 'storage/unauthorized':
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'No tiene permiso para realizar esta acción!',
+                        });
+                        break;
+                    case 'storage/canceled':
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Subida cancelada, intentelo de nuevo!',
+                        });
+                        break;
+                    case 'storage/unknown':
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Error desconocido!',
+                        });
+                        break;
                     default:
                         Swal.fire({
                             icon: 'error',
@@ -136,16 +139,53 @@ export const AddProduct = () => {
                         break;
                 }
             });
+    }
 
-            resetForm();
+    const uploadData = async (url, storageRef) => {
+        // Add a new document with a generated id.
+
+        await addDoc(collection(db, "products"), {
+            product: toCreate.product,
+            price: toCreate.price,
+            category: toCreate.category,
+            description: toCreate.description,
+            imageUrl: url || '',
+            imageRef: storageRef.fullPath
+        }).then(({ id }) => {
+            console.log(id)
+        }).catch(({ code }) => {
+            Swal.close();
+            console.log(code)
+        });
+
+        resetForm();
+
+        Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Su producto ha sido creado con existo.',
+            showConfirmButton: false,
+            timer: 1500
+        })
+    }
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+
+        if (files.length > 0 && toCreate.product && toCreate.price && toCreate.description && toCreate.category != 0) {
+
+            const storageRef = ref(storage, 'images/alura-geek-izix-' + Math.floor(Math.random() * Date.now()) + "." + files[0].name.split('.').pop());
+
+            uploadImage(storageRef, files[0]);
 
             Swal.fire({
-                position: 'top-end',
-                icon: 'success',
-                title: 'Su producto ha sido creado con existo.',
+                title: 'Cargando...',
+                allowOutsideClick: false,
                 showConfirmButton: false,
-                timer: 1500
-            })
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
 
         } else {
             Swal.fire({
