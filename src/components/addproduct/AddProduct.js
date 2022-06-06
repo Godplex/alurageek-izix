@@ -1,4 +1,4 @@
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
@@ -142,21 +142,29 @@ export const AddProduct = () => {
     }
 
     const uploadData = async (url, storageRef) => {
-        // Add a new document with a generated id.
 
-        await addDoc(collection(db, "products"), {
+        const newProductRef = doc(collection(db, "products"));
+
+        const data = {
             product: toCreate.product,
             price: toCreate.price,
             category: toCreate.category,
             description: toCreate.description,
             imageUrl: url || '',
-            imageRef: storageRef.fullPath
-        }).then(({ id }) => {
-            console.log(id)
-        }).catch(({ code }) => {
-            Swal.close();
-            console.log(code)
-        });
+            imageRef: storageRef.fullPath,
+            productRef: newProductRef.id
+        }
+
+        console.log(newProductRef);
+        console.log(data);
+
+        await setDoc(doc(db, "products", newProductRef.id), data)
+            .then((resp) => {
+                console.log(resp)
+            }).catch(({ code }) => {
+                Swal.close();
+                console.log(code)
+            });
 
         resetForm();
 
@@ -206,11 +214,6 @@ export const AddProduct = () => {
                         <form className="row d-flex align-items-center pt-3" onSubmit={onSubmit}>
                             <div className="col-md-5 col-lg-7">
                                 <section>
-                                    <div className="d-flex justify-content-end">
-                                        <button type="button" className="btn btn-danger btn-sm rounded" onClick={removeFile()} disabled={files.length == 0}>
-                                            Eliminar <i className="fa-solid fa-trash-can"></i>
-                                        </button>
-                                    </div>
                                     <div {...getRootProps({ className: 'dropzone' })} role="button">
                                         <input {...getInputProps()} />
                                         {
@@ -236,6 +239,11 @@ export const AddProduct = () => {
                                                     {thumbs}
                                                 </div>
                                         }
+                                    </div>
+                                    <div className="d-flex justify-content-end pt-1">
+                                        <button type="button" className="btn btn-danger btn-sm rounded" onClick={removeFile()} disabled={files.length == 0}>
+                                            Eliminar <i className="fa-solid fa-trash-can"></i>
+                                        </button>
                                     </div>
                                 </section>
                             </div>
@@ -269,9 +277,9 @@ export const AddProduct = () => {
                                 <div className="form-floating mb-3">
                                     <select className="form-select" name="category" value={toCreate.category} onChange={handleChange} id="floatingSelect">
                                         <option value="0" disabled>Seleccione una categoria</option>
-                                        <option value="1">Star Wars</option>
-                                        <option value="2">Consolas</option>
-                                        <option value="3">Diversos</option>
+                                        <option value="Star Wars">Star Wars</option>
+                                        <option value="Consolas">Consolas</option>
+                                        <option value="Diversos">Diversos</option>
                                     </select>
                                     <label htmlFor="floatingSelect">Categoria del producto</label>
                                 </div>

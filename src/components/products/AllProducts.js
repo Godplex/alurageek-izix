@@ -1,15 +1,34 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Slider from 'react-slick/lib/slider';
-import { categoryProducts } from '../../assets/data/products';
 import { AllProductsItem } from './AllProductsItem';
+import { collection, getDocs } from "firebase/firestore";
+import { db } from '../../firebaseconf';
+import { PropagateLoader } from 'react-spinners';
+import logo from '../../assets/logo.png';
 
 export const AllProducts = () => {
+
+    const [isLoading, setIsLoading] = useState(true);
+    const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        getDocs(collection(db, "products"))
+            .then((querySnapshot) => {
+                const newUserDataArray = querySnapshot.docs
+                    .map((doc) => ({ ...doc.data(), id: doc.id }));
+                setProducts(newUserDataArray);
+                setIsLoading(false);
+            })
+            .catch((err) => {
+                console.error("Failed to retrieve data", err);
+            });
+    }, [products]);
 
     var settings = {
         arrows: false,
         dots: false,
-        infinite: true,
+        infinite: false,
         autoplay: true,
         speed: 500,
         slidesToShow: 6,
@@ -31,14 +50,10 @@ export const AllProducts = () => {
                 settings: {
                     slidesToShow: 2,
                     dots: true,
-                    rows: 9,
                 }
             },
         ]
     };
-
-    const productsCategory = categoryProducts.map(({ products }) => products);
-    const products = productsCategory[0].concat(productsCategory[1], productsCategory[2]);
 
     return (
         <section className="py-4 bg-secondary">
@@ -51,16 +66,31 @@ export const AllProducts = () => {
                         Agregar producto
                     </Link>
                 </div>
-                <Slider {...settings} className="slider-products">
-                    {
-                        products.map(item => (
-                            <AllProductsItem
-                                key={item.id}
-                                {...item}
-                            />
-                        ))
-                    }
-                </Slider>
+                {
+                    (!isLoading)
+                        ?
+                        (products.length > 0)
+                            ?
+                            <Slider {...settings} className="slider-products">
+                                {
+                                    products.map(item => (
+                                        <AllProductsItem
+                                            key={item.id}
+                                            {...item}
+                                        />
+                                    ))
+                                }
+                            </Slider>
+                            :
+                            <div className='d-flex flex-column justify-content-center align-items-center py-5 my-5'>
+                                <p className="display-6 m-0 text-center">No hay productos disponibles.</p>
+                            </div>
+                        :
+                        <div className="d-flex flex-column justify-content-center align-items-center py-5 my-5">
+                            <img src={logo} alt="logo" className="col-xl-1 col-lg-2 col-md-3 col-6" />
+                            <PropagateLoader color={"#2A7AE4"} />
+                        </div>
+                }
             </div>
         </section>
     )
