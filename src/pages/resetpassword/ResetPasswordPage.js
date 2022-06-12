@@ -1,5 +1,5 @@
 import { onAuthStateChanged, sendPasswordResetEmail } from 'firebase/auth';
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { auth } from '../../firebaseconf';
@@ -8,13 +8,11 @@ export const ResetPasswordPage = () => {
 
     let navigate = useNavigate();
 
-    useEffect(() => {
-        onAuthStateChanged(auth, (userFirebase) => {
-            if (userFirebase) {
-                navigate('/');
-            }
-        });
-    }, []);
+    onAuthStateChanged(auth, (userFirebase) => {
+        if (userFirebase) {
+            navigate('/');
+        }
+    });
 
     const resetPassword = async (email) => {
         Swal.fire({

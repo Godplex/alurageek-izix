@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 import Swal from 'sweetalert2';
@@ -8,13 +8,11 @@ export const CreateAccountPage = () => {
 
     let navigate = useNavigate();
 
-    useEffect(() => {
-        onAuthStateChanged(auth, (userFirebase) => {
-            if (userFirebase) {
-                navigate('/');
-            }
-        });
-    }, []);
+    onAuthStateChanged(auth, (userFirebase) => {
+        if (userFirebase) {
+            navigate('/');
+        }
+    });
 
     const createUser = async (email, password) => {
         Swal.fire({

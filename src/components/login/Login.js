@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Swal from 'sweetalert2';
 import { auth } from '../../firebaseconf';
 import { signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
@@ -8,13 +8,11 @@ export const Login = () => {
 
     let navigate = useNavigate();
 
-    useEffect(() => {
-        onAuthStateChanged(auth, (userFirebase) => {
-            if (userFirebase) {
-                navigate('/');
-            }
-        });
-    }, []);
+    onAuthStateChanged(auth, (userFirebase) => {
+        if (userFirebase) {
+            navigate('/');
+        }
+    });
 
     const loginUser = async (email, password) => {
         Swal.fire({

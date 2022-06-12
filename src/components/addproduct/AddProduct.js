@@ -1,11 +1,21 @@
-import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
+import { collection, doc, setDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import Swal from 'sweetalert2';
 import { db, storage } from '../../firebaseconf';
+import { useForm } from '../../hooks/useForm';
 
 export const AddProduct = () => {
+
+    const [formValues, handleInputChange, reset] = useForm({
+        name: '',
+        price: '',
+        category: '0',
+        description: ''
+    });
+
+    const { name, price, category, description } = formValues;
 
     let isMobile = Boolean(navigator.userAgent.match(
         /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
@@ -48,27 +58,6 @@ export const AddProduct = () => {
     useEffect(() => () => {
         files.forEach(file => URL.revokeObjectURL(file.preview));
     }, [files]);
-
-    const [toCreate, setToCreate] = useState({
-        product: '',
-        price: '',
-        category: '0',
-        description: ''
-    });
-
-    const resetForm = () => {
-        setFiles([]);
-        setToCreate({
-            product: '',
-            price: '',
-            category: '0',
-            description: ''
-        });
-    };
-
-    const handleChange = (e) => {
-        setToCreate({ ...toCreate, [e.target.name]: e.target.value });
-    };
 
     const uploadImage = (storageRef, file) => {
         uploadBytes(storageRef, file).then((resp) => {
@@ -146,13 +135,12 @@ export const AddProduct = () => {
         const newProductRef = doc(collection(db, "products"));
 
         const data = {
-            product: toCreate.product,
-            price: toCreate.price,
-            category: toCreate.category,
-            description: toCreate.description,
+            name: name,
+            price: price,
+            category: category,
+            description: description,
             imageUrl: url || '',
             imageRef: storageRef.fullPath,
-            productRef: newProductRef.id
         }
 
         console.log(newProductRef);
@@ -166,7 +154,7 @@ export const AddProduct = () => {
                 console.log(code)
             });
 
-        resetForm();
+        reset();
 
         Swal.fire({
             position: 'top-end',
@@ -180,20 +168,13 @@ export const AddProduct = () => {
     const onSubmit = (e) => {
         e.preventDefault();
 
-        if (files.length > 0 && toCreate.product && toCreate.price && toCreate.description && toCreate.category != 0) {
+        if (files.length > 0 && formValues.name && formValues.price && formValues.description && formValues.category != 0) {
+
+            loadingAlert();
 
             const storageRef = ref(storage, 'images/alura-geek-izix-' + Math.floor(Math.random() * Date.now()) + "." + files[0].name.split('.').pop());
 
             uploadImage(storageRef, files[0]);
-
-            Swal.fire({
-                title: 'Cargando...',
-                allowOutsideClick: false,
-                showConfirmButton: false,
-                didOpen: () => {
-                    Swal.showLoading();
-                }
-            });
 
         } else {
             Swal.fire({
@@ -205,6 +186,17 @@ export const AddProduct = () => {
 
     };
 
+
+    const loadingAlert = () => {
+        Swal.fire({
+            title: 'Cargando...',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+    }
     return (
         <section className="py-5 bg-secondary">
             <div className="container py-2">
@@ -212,7 +204,7 @@ export const AddProduct = () => {
                     <div className="col-lg-7">
                         <h3 className="fw-bolder">Agregar nuevo producto</h3>
                         <form className="row d-flex align-items-center pt-3" onSubmit={onSubmit}>
-                            <div className="col-md-5 col-lg-7">
+                            <div className="col-md-12">
                                 <section>
                                     <div {...getRootProps({ className: 'dropzone' })} role="button">
                                         <input {...getInputProps()} />
@@ -247,35 +239,17 @@ export const AddProduct = () => {
                                     </div>
                                 </section>
                             </div>
-                            <div className="col-md-5 col-lg-5 d-none d-md-block">
-                                <div className="row d-flex align-items-center">
-                                    <div className="col-1 ps-0 text-center">
-                                        O
-                                    </div>
-                                    <div className="col-10 p-0">
-                                        <button type="button" className="btn btn-outline-primary py-3 w-100">
-                                            {
-                                                (!isMobile)
-                                                    ?
-                                                    <p className="m-0">Busque en su computadora</p>
-                                                    :
-                                                    <p className="m-0">Busque en su dispositivo</p>
-                                            }
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
                             <div className="col-12 mt-4">
                                 <div className="form-floating mb-3">
-                                    <input type="text" name="product" className="form-control" id="floatingInputProduct" placeholder="Nombre del producto" maxLength={20} value={toCreate.product} onChange={handleChange} required />
+                                    <input type="name" name="name" className="form-control" id="floatingInputProduct" placeholder="Nombre del producto" maxLength={20} value={name} onChange={handleInputChange} required />
                                     <label htmlFor="floatingInputProduct">Nombre del producto</label>
                                 </div>
                                 <div className="form-floating mb-3">
-                                    <input type="number" name="price" className="form-control" id="floatingInputNumber" placeholder="Precio del producto" min={0} value={toCreate.price} onChange={handleChange} required />
+                                    <input type="number" name="price" className="form-control" id="floatingInputNumber" placeholder="Precio del producto" min={0} value={price} onChange={handleInputChange} required />
                                     <label htmlFor="floatingInputNumber">Precio del producto</label>
                                 </div>
                                 <div className="form-floating mb-3">
-                                    <select className="form-select" name="category" value={toCreate.category} onChange={handleChange} id="floatingSelect">
+                                    <select className="form-select" name="category" value={category} onChange={handleInputChange} id="floatingSelect">
                                         <option value="0" disabled>Seleccione una categoria</option>
                                         <option value="Star Wars">Star Wars</option>
                                         <option value="Consolas">Consolas</option>
@@ -285,7 +259,7 @@ export const AddProduct = () => {
                                 </div>
                                 <div className="form-floating mb-3">
                                     <textarea type="text" name="description" className="form-control" placeholder="Descripcion del producto" id="floatingTextareaDescritpion" style={{ height: 100 }} maxLength={150}
-                                        value={toCreate.description} onChange={handleChange} required></textarea>
+                                        value={description} onChange={handleInputChange} required></textarea>
                                     <label htmlFor="floatingTextareaDescritpion">Descripcion del producto</label>
                                 </div>
                                 <button type="submit" className="btn btn-primary w-100 py-3 mt-3">Agregar producto</button>

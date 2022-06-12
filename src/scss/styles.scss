@@ -2,10 +2,23 @@
 $primary: #2A7AE4;
 $secondary: #F5F5F5;
 $white: white;
-$form-floating-label-opacity: 1!important;
+$form-floating-label-opacity: 1 !important;
 @import "../../node_modules/bootswatch/dist/cosmo/variables";
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
 @import "../../node_modules/bootswatch/dist/cosmo/bootswatch";
 @import "./base/base";
 @import "../../node_modules/slick-carousel/slick/slick.scss";
 @import "../../node_modules/slick-carousel/slick/slick-theme.scss";
+@import "../../node_modules/sweetalert2/src/variables.scss";
+@import "../../node_modules/sweetalert2/src/variables.scss";
+$swal2-confirm-button-background-color: $primary  !important;
+$swal2-cancel-button-background-color: $danger  !important;
+$swal2-error: $danger  !important;
+$swal2-deny-button-background-color: $danger  !important;
+
+.swal2-icon.swal2-warning {
+    border-color: lighten($color: $warning, $amount: 20) !important;
+    color: $warning  !important;
+}
+
+@import "../../node_modules/sweetalert2/src/sweetalert2.scss";
