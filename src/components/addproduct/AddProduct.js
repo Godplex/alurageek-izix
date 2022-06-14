@@ -1,4 +1,4 @@
-import { collection, doc, setDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
@@ -132,8 +132,6 @@ export const AddProduct = () => {
 
     const uploadData = async (url, storageRef) => {
 
-        const newProductRef = doc(collection(db, "products"));
-
         const data = {
             name: name,
             price: price,
@@ -143,26 +141,21 @@ export const AddProduct = () => {
             imageRef: storageRef.fullPath,
         }
 
-        console.log(newProductRef);
-        console.log(data);
-
-        await setDoc(doc(db, "products", newProductRef.id), data)
-            .then((resp) => {
-                console.log(resp)
-            }).catch(({ code }) => {
-                Swal.close();
-                console.log(code)
-            });
+        await addDoc(collection(db, "products"), data).then(() => {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Su producto ha sido creado con existo.',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        }).catch(({ code }) => {
+            Swal.close();
+            console.log(code)
+        });
 
         reset();
 
-        Swal.fire({
-            position: 'top-end',
-            icon: 'success',
-            title: 'Su producto ha sido creado con existo.',
-            showConfirmButton: false,
-            timer: 1500
-        })
     }
 
     const onSubmit = (e) => {
