@@ -32,17 +32,22 @@ export const errorCodeAlert = (code) => {
     case "not-found":
       errorAlert("Producto no encontrado!");
       break;
+    case "invalid-argument":
+      errorAlert("Argumento invalido!");
+      break;
     default:
       errorAlert(code);
       break;
   }
 };
 
-export const errorAlert = (message) => {
+export const errorAlert = (message = "Error desconocido, intentelo de nuevo!") => {
   Swal.fire({
     icon: "error",
     title: "Oops...",
     text: message,
+    showConfirmButton: false,
+    timer: 1500,
   });
 };
 

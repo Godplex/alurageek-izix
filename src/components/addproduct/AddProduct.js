@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { errorAlert } from "../../alerts/Alerts";
-import { createRefImage } from "../../firebase/providers";
+import { createProduct } from "../../firebase/providers";
 import { useForm } from "../../hooks/useForm";
 
 export const AddProduct = () => {
@@ -72,7 +72,7 @@ export const AddProduct = () => {
       formValues.description &&
       formValues.category != 0
     ) {
-      createRefImage(files[0], formValues, setFiles, reset);
+      createProduct(files[0], formValues, setFiles, reset)
     } else {
       errorAlert("Por favor, complete todos los campos.");
     }

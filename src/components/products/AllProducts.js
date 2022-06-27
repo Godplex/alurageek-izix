@@ -25,35 +25,36 @@ export const AllProducts = () => {
               Agregar producto
             </Link>
           </div>
-          {!isLoading ? (
-            products.length > 0 ? (
-              <Slider {...settingsAllProducts} className="slider-products">
-                {products.map((item) => (
-                  <AllProductsItem
-                    key={item.id}
-                    product={item}
-                    products={products}
-                    setProducts={setProducts}
-                  />
-                ))}
-              </Slider>
+          {!isLoading
+            ? (
+              products.length > 0 ? (
+                <Slider {...settingsAllProducts(products.length)} className="slider-products">
+                  {products.map((item) => (
+                    <AllProductsItem
+                      key={item.id}
+                      product={item}
+                      products={products}
+                      setProducts={setProducts}
+                    />
+                  ))}
+                </Slider>
+              ) : (
+                <div className="d-flex flex-column justify-content-center align-items-center py-5 my-5">
+                  <p className="display-6 m-0 text-center">
+                    No hay productos disponibles.
+                  </p>
+                </div>
+              )
             ) : (
               <div className="d-flex flex-column justify-content-center align-items-center py-5 my-5">
-                <p className="display-6 m-0 text-center">
-                  No hay productos disponibles.
-                </p>
+                <img
+                  src={logo}
+                  alt="logo"
+                  className="col-xl-1 col-lg-2 col-md-3 col-6"
+                />
+                <PropagateLoader color={"#2A7AE4"} />
               </div>
-            )
-          ) : (
-            <div className="d-flex flex-column justify-content-center align-items-center py-5 my-5">
-              <img
-                src={logo}
-                alt="logo"
-                className="col-xl-1 col-lg-2 col-md-3 col-6"
-              />
-              <PropagateLoader color={"#2A7AE4"} />
-            </div>
-          )}
+            )}
         </div>
       </section>
     </>

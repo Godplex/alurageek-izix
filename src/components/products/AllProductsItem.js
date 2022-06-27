@@ -37,13 +37,17 @@ export const AllProductsItem = ({ product, products, setProducts }) => {
           <i className="fa-solid fa-pen text-white"></i>
         </Button>
       </div>
-      <UpdateProduct
-        product={product}
-        show={show}
-        handleClose={handleClose}
-        products={products}
-        setProducts={setProducts}
-      />
+      {
+        (show)
+        &&
+        <UpdateProduct
+          product={product}
+          show={show}
+          handleClose={handleClose}
+          products={products}
+          setProducts={setProducts}
+        />
+      }
     </>
   );
 };

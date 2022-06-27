@@ -55,9 +55,8 @@ export const ResetPasswordPage = () => {
               <input
                 type="email"
                 name="email"
-                className={`form-control ${
-                  !toPattern && email.length > 0 && "is-invalid"
-                }`}
+                className={`form-control ${!toPattern && email.length > 0 && "is-invalid"
+                  }`}
                 id="floatingInputEmail"
                 placeholder="Escriba su correo electronico"
                 value={email}

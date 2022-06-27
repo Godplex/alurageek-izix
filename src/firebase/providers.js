@@ -24,8 +24,12 @@ import {
   deleteDoc,
   doc,
   updateDoc,
+  query,
+  where
 } from "firebase/firestore";
 import Swal from "sweetalert2";
+
+//Iniciar sesión
 
 export const loginUser = async (email, password) => {
   loadingAlert();
@@ -41,9 +45,11 @@ export const loginUser = async (email, password) => {
     });
 };
 
+//Restablecer contraseña
+
 export const resetPassword = async (email) => {
   loadingAlert();
-  await sendPasswordResetEmail(auth, email)
+  return await sendPasswordResetEmail(auth, email)
     .then(() => {
       closeAlert();
       successAlert("Se ha enviado un correo para restablecer la contraseña!");
@@ -55,6 +61,8 @@ export const resetPassword = async (email) => {
       return false;
     });
 };
+
+//Crear usuario
 
 export const createUser = async (email, password) => {
   loadingAlert();
@@ -70,55 +78,71 @@ export const createUser = async (email, password) => {
     });
 };
 
+//Cerrar sesión
+
 export const logout = async () => {
   return await signOut(auth);
 };
 
-export const createRefImage = async (file, formValues, setFiles, reset) => {
+//Crear producto
+
+export const createProduct = async (file, formValues, setFiles, reset) => {
   loadingAlert();
 
   const storageRef = ref(
     storage,
     "images/alura-geek-izix-" +
-      Math.floor(Math.random() * Date.now()) +
-      "." +
-      file.name.split(".").pop()
+    Math.floor(Math.random() * Date.now()) +
+    "." +
+    file.name.split(".").pop()
   );
 
-  uploadImage(storageRef, file, formValues, setFiles, reset);
-};
-
-export const uploadImage = (storageRef, file, formValues, setFiles, reset) => {
-  uploadBytes(storageRef, file)
-    .then((resp) => {
-      console.log(resp);
-      getUrlImage(storageRef, formValues, setFiles, reset);
-    })
-    .catch(({ code }) => {
+  await uploadImage(file, storageRef).then(async (storageRef) => {
+    await getUrlImage(storageRef).then(async (url) => {
+      await uploadData(url, storageRef, formValues).then(() => {
+        setFiles([]);
+        reset();
+        successAlert("Su producto ha sido creado con existo!");
+      })
+        .catch(({ code }) => {
+          closeAlert();
+          errorCodeAlert(code);
+        });
+    }).catch(({ code }) => {
       closeAlert();
       errorCodeAlert(code);
     });
+  }).catch(({ code }) => {
+    closeAlert();
+    errorCodeAlert(code);
+  });
+
+}
+
+//Subir imagen de un producto
+
+const uploadImage = async (file, storageRef) => {
+
+  return await uploadBytes(storageRef, file).then(() => {
+    return storageRef;
+  });
 };
 
-export const getUrlImage = async (storageRef, formValues, setFiles, reset) => {
-  getDownloadURL(storageRef)
+//Obterner url imagen de un producto
+
+const getUrlImage = async (storageRef) => {
+  return await getDownloadURL(storageRef)
     .then((url) => {
-      console.log(storageRef);
-
-      uploadData(url, storageRef, formValues, setFiles, reset);
-    })
-    .catch(({ code }) => {
-      closeAlert();
-      errorCodeAlert(code);
+      return url;
     });
 };
 
-export const uploadData = async (
+//crear contenido del producto
+
+const uploadData = async (
   url,
   storageRef,
-  formValues,
-  setFiles,
-  reset
+  formValues
 ) => {
   const data = {
     name: formValues.name,
@@ -129,17 +153,10 @@ export const uploadData = async (
     imageRef: storageRef.fullPath,
   };
 
-  await addDoc(collection(db, "products"), data)
-    .then(() => {
-      setFiles([]);
-      reset();
-      successAlert("Su producto ha sido creado con existo!");
-    })
-    .catch(({ code }) => {
-      closeAlert();
-      errorCodeAlert(code);
-    });
+  return await addDoc(collection(db, "products"), data);
 };
+
+//Obtener todos los productos
 
 export const getProducts = async (setProducts, setIsLoading) => {
   return await getDocs(collection(db, "products"))
@@ -156,6 +173,8 @@ export const getProducts = async (setProducts, setIsLoading) => {
     });
 };
 
+//Eliminar producto
+
 export const deleteProduct = async (id, imageRef, products, setProducts) => {
   Swal.fire({
     title: "¿Esta seguro?",
@@ -164,45 +183,46 @@ export const deleteProduct = async (id, imageRef, products, setProducts) => {
     showCancelButton: true,
     confirmButtonText: "!Si, eliminar!",
     cancelButtonText: "Cancelar",
-  }).then((result) => {
+  }).then(async (result) => {
     if (result.isConfirmed) {
       loadingAlert();
-      deleteImage(imageRef, id, products, setProducts);
+      await deleteImage(imageRef).then(async () => {
+        await deleteData(id)
+          .then(() => {
+            let filtredData = products.filter((item) => item.id !== id);
+            setProducts(filtredData);
+            closeAlert();
+            successAlert("El producto ha sido eliminado!");
+          }).catch(({ code }) => {
+            closeAlert();
+            errorCodeAlert(code);
+          });
+      }).catch(({ code }) => {
+        closeAlert();
+        errorCodeAlert(code);
+      });
     }
   });
 };
 
-export const deleteImage = async (imageRef, id, products, setProducts) => {
+//Eliminar imagen producto
+
+const deleteImage = async (imageRef) => {
   const desertRef = ref(storage, imageRef);
 
-  await deleteObject(desertRef)
-    .then(() => {
-      deleteData(id, products, setProducts);
-    })
-    .catch(({ code }) => {
-      closeAlert();
-      errorCodeAlert(code);
-    });
+  return await deleteObject(desertRef);
 };
 
-export const deleteData = async (id, products, setProducts) => {
-  await deleteDoc(doc(db, "products", id))
-    .then(() => {
-      const filtredData = products.filter((item) => item.id !== id);
-      setProducts(filtredData);
-      closeAlert();
-      successAlert("El producto ha sido eliminado!");
-    })
-    .catch(({ code }) => {
-      closeAlert();
-      errorCodeAlert(code);
-    });
+//Eliminar contenido producto
+
+const deleteData = async (id) => {
+  return await deleteDoc(doc(db, "products", id));
 };
 
-export const uploadProduct = async (formValues, id, products, setProducts) => {
+//Actualizar producto
+
+export const updateProduct = async (formValues, id, products, setProducts) => {
   loadingAlert();
-
-  const ProductRef = doc(db, "products", id);
 
   const data = {
     name: formValues.name,
@@ -211,7 +231,7 @@ export const uploadProduct = async (formValues, id, products, setProducts) => {
     description: formValues.description,
   };
 
-  await updateDoc(ProductRef, data)
+  return await updateData(id, data)
     .then(() => {
       const newState = products.map((p) => {
         if (p.id === id) {
@@ -221,9 +241,94 @@ export const uploadProduct = async (formValues, id, products, setProducts) => {
         return p;
       });
       setProducts(newState);
-      successAlert("Su producto ha sido creado con existo!");
+      successAlert("Su producto ha sido actualizado con exito!");
     })
     .catch(({ code }) => {
       errorCodeAlert(code);
     });
 };
+
+//Actualizar contenido del producto
+
+const updateData = async (id, data) => {
+  const ProductRef = doc(db, "products", id);
+  return await updateDoc(ProductRef, data)
+}
+
+//Actualizar imagen producto
+
+export const updateImage = async (file, imageRef, id, products, setProducts, handleClose2, setFiles) => {
+
+  loadingAlert();
+
+  const storageRef = ref(storage, imageRef);
+
+  return await uploadImage(file, storageRef).then(async (storageRef) => {
+    await getUrlImage(storageRef).then(async (url) => {
+
+      const data = {
+        imageUrl: url,
+        imageRef: imageRef
+      };
+
+      await updateData(id, data).then(() => {
+        const newState = products.map((p) => {
+          if (p.id === id) {
+            const { imageUrl, imageRef } = data;
+            return { ...p, imageUrl, imageRef };
+          }
+          return p;
+        });
+        setFiles([]);
+        handleClose2();
+        setProducts(newState);
+        successAlert("Su imagen ha sido actualizada con exito!");
+      })
+        .catch(({ code }) => {
+          errorCodeAlert(code);
+        });
+
+    }).catch(({ code }) => {
+      closeAlert();
+      errorCodeAlert(code);
+    });
+  }).catch(({ code }) => {
+    closeAlert();
+    errorCodeAlert(code);
+  });
+
+}
+
+export const getProductsByCategory = async (category, setProducts, setIsLoading) => {
+  const q = query(collection(db, "products"), where("category", "==", category));
+
+  return await getDocs(q).then((querySnapshot) => {
+    const newUserDataArray = querySnapshot.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
+    setProducts(newUserDataArray);
+    setIsLoading(false);
+  })
+    .catch(({ code }) => {
+      errorCodeAlert(code);
+    });
+}
+
+export const getSimilarProducts = async (id, setProducts, setIsLoading) => {
+  return await getDocs(collection(db, "products"))
+    .then((querySnapshot) => {
+      const newUserDataArray = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      setProducts(newUserDataArray);
+      console.log(newUserDataArray);
+      setIsLoading(false);
+    })
+    .catch(({ code }) => {
+      errorCodeAlert(code);
+    });
+}
+
+
