@@ -1,36 +1,18 @@
 {
   "files": {
-    "main.css": "/alurageek-izix/static/css/main.e3802580.css",
-    "main.js": "/alurageek-izix/static/js/main.3438b053.js",
+    "main.css": "/alurageek-izix/static/css/main.b3e4f97f.css",
+    "main.js": "/alurageek-izix/static/js/main.ccd99010.js",
     "static/media/banner.jpg": "/alurageek-izix/static/media/banner.600254d5ef0bead20644.jpg",
-    "static/media/control-xyz-1.png": "/alurageek-izix/static/media/control-xyz-1.91126b3b8913da9682ab.png",
-    "static/media/atari-shirt-1.png": "/alurageek-izix/static/media/atari-shirt-1.4d9ae66c3d00a1361a50.png",
-    "static/media/control-console-xyz-4.png": "/alurageek-izix/static/media/control-console-xyz-4.bfc4b08ecaebb507f69b.png",
-    "static/media/product-xyz-5.png": "/alurageek-izix/static/media/product-xyz-5.a39f3c60fa6d599dad05.png",
-    "static/media/control-console-xyz-2.png": "/alurageek-izix/static/media/control-console-xyz-2.9aa8e095e7fd9d58d6be.png",
-    "static/media/product-xyz-7.png": "/alurageek-izix/static/media/product-xyz-7.ff42df70f93cf5f1a5ed.png",
-    "static/media/product-xyz-6.png": "/alurageek-izix/static/media/product-xyz-6.5cd51e064e8751d79569.png",
-    "static/media/snes-shirt-1.png": "/alurageek-izix/static/media/snes-shirt-1.47e7160b5572951b2ba0.png",
-    "static/media/product-xyz-2.png": "/alurageek-izix/static/media/product-xyz-2.4ecb4e1f8b490a430a68.png",
-    "static/media/product-xyz-1.png": "/alurageek-izix/static/media/product-xyz-1.bc16458097ac03818012.png",
-    "static/media/product-xyz-4.png": "/alurageek-izix/static/media/product-xyz-4.a68e057dc9372fc3db14.png",
-    "static/media/game-boy-color.png": "/alurageek-izix/static/media/game-boy-color.927780c190f399ba338c.png",
-    "static/media/control-xyz-2.png": "/alurageek-izix/static/media/control-xyz-2.c51fa89498e49e5221b9.png",
-    "static/media/console-xyz-1.png": "/alurageek-izix/static/media/console-xyz-1.be90e0aa8bf0765d227f.png",
-    "static/media/control-console-xyz-3.png": "/alurageek-izix/static/media/control-console-xyz-3.4df8704c5c3e92c8bf27.png",
-    "static/media/control-console-xyz-1.png": "/alurageek-izix/static/media/control-console-xyz-1.136197383f3bafec5228.png",
-    "static/media/product-xyz-3.png": "/alurageek-izix/static/media/product-xyz-3.98693addf98ed32c78aa.png",
-    "static/media/console-xyz-2.png": "/alurageek-izix/static/media/console-xyz-2.e85b1832ff83345c8541.png",
     "static/media/slick.svg": "/alurageek-izix/static/media/slick.2630a3e3eab21c607e21.svg",
     "static/media/slick.eot": "/alurageek-izix/static/media/slick.a4e97f5a2a64f0ab1323.eot",
     "static/media/slick.ttf": "/alurageek-izix/static/media/slick.c94f7671dcc99dce43e2.ttf",
     "static/media/slick.woff": "/alurageek-izix/static/media/slick.295183786cd8a1389865.woff",
     "index.html": "/alurageek-izix/index.html",
-    "main.e3802580.css.map": "/alurageek-izix/static/css/main.e3802580.css.map",
-    "main.3438b053.js.map": "/alurageek-izix/static/js/main.3438b053.js.map"
+    "main.b3e4f97f.css.map": "/alurageek-izix/static/css/main.b3e4f97f.css.map",
+    "main.ccd99010.js.map": "/alurageek-izix/static/js/main.ccd99010.js.map"
   },
   "entrypoints": [
-    "static/css/main.e3802580.css",
-    "static/js/main.3438b053.js"
+    "static/css/main.b3e4f97f.css",
+    "static/js/main.ccd99010.js"
   ]
 }
