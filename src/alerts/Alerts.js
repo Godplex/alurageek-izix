@@ -1,6 +1,8 @@
 import Swal from "sweetalert2";
 
 export const errorCodeAlert = (code) => {
+  console.log(code)
+
   switch (code) {
     case "auth/user-not-found":
       errorAlert("Este usuario no existe!");
@@ -34,6 +36,9 @@ export const errorCodeAlert = (code) => {
       break;
     case "invalid-argument":
       errorAlert("Argumento invalido!");
+      break;
+    case "permission-denied":
+      errorAlert("Usted no esta autorizado!");
       break;
     default:
       errorAlert(code);

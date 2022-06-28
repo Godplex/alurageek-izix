@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { categoryProducts } from '../../assets/data/products';
+//import { categoryProducts } from '../../assets/data/products';
 import { CarouselProducts } from '../../components/carousel-products/CarouselProducts';
 import { Product } from '../../components/product/Product';
 import { getSimilarProducts } from '../../firebase/providers';

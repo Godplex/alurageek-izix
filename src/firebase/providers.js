@@ -25,9 +25,11 @@ import {
   doc,
   updateDoc,
   query,
-  where
+  where,
+  getDoc
 } from "firebase/firestore";
 import Swal from "sweetalert2";
+import { async } from "@firebase/util";
 
 //Iniciar sesión
 
@@ -322,13 +324,26 @@ export const getSimilarProducts = async (id, setProducts, setIsLoading) => {
         ...doc.data(),
         id: doc.id,
       }));
-      setProducts(newUserDataArray);
-      console.log(newUserDataArray);
+      let filtredData = newUserDataArray.filter((item) => item.id !== id);
+      setProducts(filtredData);
       setIsLoading(false);
     })
     .catch(({ code }) => {
       errorCodeAlert(code);
     });
+}
+
+export const getProductById = async (id, setProduct, setIsLoading, setExits) => {
+  const docRef = doc(db, "products", id);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    setProduct({ ...docSnap.data(), id: docSnap.id });
+    setIsLoading(false);
+  } else {
+    setExits(false);
+    setIsLoading(false);
+  }
 }
 
 
