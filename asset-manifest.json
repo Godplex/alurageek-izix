@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/alurageek-izix/static/css/main.b3e4f97f.css",
-    "main.js": "/alurageek-izix/static/js/main.ccd99010.js",
+    "main.js": "/alurageek-izix/static/js/main.cdb0522c.js",
     "static/media/banner.jpg": "/alurageek-izix/static/media/banner.600254d5ef0bead20644.jpg",
     "static/media/slick.svg": "/alurageek-izix/static/media/slick.2630a3e3eab21c607e21.svg",
     "static/media/slick.eot": "/alurageek-izix/static/media/slick.a4e97f5a2a64f0ab1323.eot",
@@ -9,10 +9,10 @@
     "static/media/slick.woff": "/alurageek-izix/static/media/slick.295183786cd8a1389865.woff",
     "index.html": "/alurageek-izix/index.html",
     "main.b3e4f97f.css.map": "/alurageek-izix/static/css/main.b3e4f97f.css.map",
-    "main.ccd99010.js.map": "/alurageek-izix/static/js/main.ccd99010.js.map"
+    "main.cdb0522c.js.map": "/alurageek-izix/static/js/main.cdb0522c.js.map"
   },
   "entrypoints": [
     "static/css/main.b3e4f97f.css",
-    "static/js/main.ccd99010.js"
+    "static/js/main.cdb0522c.js"
   ]
 }
