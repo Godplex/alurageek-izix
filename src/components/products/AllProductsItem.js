@@ -37,7 +37,7 @@ export const AllProductsItem = ({ product, products, setProducts }) => {
             &&
             <Skeleton variant="rectangular" animation="wave" width={width} height={width} />
           }
-          <img src={imageUrl} style={imageStyle} alt={name} onLoad={handleImageLoaded} />
+          <img src={imageUrl} className={`${!loadImage ? 'd-none' : 'd-block'}`} style={imageStyle} alt={name} onLoad={handleImageLoaded} />
           <h6 className="mt-3 mb-2 text-truncate">{name}</h6>
           <p className="m-0 fw-bolder">{formatter.format(price)}</p>
           {

@@ -317,17 +317,19 @@ export const getProductsByCategory = async (category, setProducts, setIsLoading)
     });
 }
 
-export const getSimilarProducts = async (id, setProducts, setIsLoading) => {
-  return await getDocs(collection(db, "products"))
-    .then((querySnapshot) => {
-      const newUserDataArray = querySnapshot.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
-      let filtredData = newUserDataArray.filter((item) => item.id !== id);
-      setProducts(filtredData);
-      setIsLoading(false);
-    })
+export const getSimilarProducts = async (id, setProducts, setIsLoading,category) => {
+
+  const q = query(collection(db, "products"), where("category", "==", category));
+
+  return await getDocs(q).then((querySnapshot) => {
+    const newUserDataArray = querySnapshot.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
+    let filtredData = newUserDataArray.filter((item) => item.id !== id);
+    setProducts(filtredData);
+    setIsLoading(false);
+  })
     .catch(({ code }) => {
       errorCodeAlert(code);
     });

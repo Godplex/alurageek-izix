@@ -3,10 +3,13 @@ import { useParams } from 'react-router-dom';
 import { getProductById } from '../../firebase/providers';
 import { Skeleton, Typography } from '@mui/material';
 import { useResizeDetector } from "react-resize-detector";
+import { useLocation } from 'react-router-dom';
 
 export const Product = () => {
 
-    const { title, productId } = useParams();
+    const location = useLocation();
+
+    const { productId } = useParams();
     const [product, setProduct] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [loadImage, setLoadImage] = useState(false);
@@ -19,8 +22,10 @@ export const Product = () => {
     const { width, ref } = useResizeDetector();
 
     useEffect(() => {
+        setIsLoading(true);
+        setExits(true);
         getProductById(productId, setProduct, setIsLoading, setExits);
-    }, [])
+    }, [location])
 
     let formatter = new Intl.NumberFormat("en-US", {
         style: "currency",

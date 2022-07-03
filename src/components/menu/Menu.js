@@ -1,12 +1,15 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate, useLocation } from "react-router-dom";
 import logo from "../../assets/logo.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebase/firebaseconf";
-import { logout } from "../../firebase/providers";
+import { getProducts, logout } from "../../firebase/providers";
+import { ReactSearchAutocomplete } from "react-search-autocomplete";
 
 export const Menu = () => {
   const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [products, setProducts] = useState([]);
 
   onAuthStateChanged(auth, (userFirebase) => {
     if (userFirebase) {
@@ -16,6 +19,28 @@ export const Menu = () => {
     }
   });
 
+  useEffect(() => {
+    getProducts(setProducts, setIsLoading);
+  }, [])
+
+  const handleOnSelect = (item) => {
+    window.location.href = `/#/admin/category/${item.category}/product/${item.id}`;
+  }
+
+  const formatResult = (item) => {
+    return (
+      <div className="row">
+        <div className="col-2">
+          <img src={item.imageUrl} alt={item.name} className="w-100" />
+        </div>
+        <div className="col-10">
+          <span style={{ display: 'block', textAlign: 'left' }}>Nombre: {item.name}</span>
+          <span style={{ display: 'block', textAlign: 'left' }}>Precio: {item.price}</span>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-white">
       <div className="container py-2">
@@ -23,14 +48,15 @@ export const Menu = () => {
           <img src={logo} alt="logo" className="logo" />
         </Link>
         <div className="col-5 me-auto ms-2 d-none d-sm-block">
-          <div className="Icon-inside">
-            <input
-              type="search"
-              placeholder="¿Que deseas buscar?"
-              className="form-control pe-5 ps-3 search"
-            />
-            <i className="fa-solid fa-magnifying-glass fa-fw"></i>
-          </div>
+          <ReactSearchAutocomplete
+            items={products}
+            styling={{ zIndex: 1000 }}
+            onSelect={handleOnSelect}
+            placeholder="¿Que deseas buscar?"
+            showNoResultsText="Sin resultados"
+            autoFocus
+            formatResult={formatResult}
+          />
         </div>
         {user ? (
           <button

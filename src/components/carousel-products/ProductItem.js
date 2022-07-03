@@ -26,7 +26,7 @@ export const ProductItem = ({ id, name, imageUrl, title, price }) => {
                     &&
                     <Skeleton variant="rectangular" animation="wave" width={width} height={width} />
                 }
-                <img src={imageUrl} className={`${!loadImage && 'd-none'}`} style={{ width: '100%', height: width, objectFit: 'cover' }} alt={name} onLoad={handleImageLoaded} />
+                <img src={imageUrl} className={`${!loadImage ? 'd-none':'d-block'}`} style={{ width: '100%', height: width, objectFit: 'cover' }} alt={name} onLoad={handleImageLoaded} />
                 <h6 className="mt-3 mb-2 text-truncate">{name}</h6>
                 <p className="m-0 fw-bolder">{(price) && formatter.format(price)}</p>
                 <Link to={`/admin/category/${title}/product/${id}`} className="text-decoration-none text-primary fw-bolder">Ver producto</Link>
