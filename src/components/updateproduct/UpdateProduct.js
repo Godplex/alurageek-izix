@@ -124,10 +124,13 @@ export const UpdateProduct = ({
         <div className="d-flex justify-content-center align-items-center">
           <div className="col-6 col-md-5 col-lg-3">
             <div className="position-relative">
-              <img
-                src={product.imageUrl}
-                className="item-img-product rounded-circle"
-              />
+              <div className="ratio ratio-1x1">
+                <img
+                  src={product.imageUrl}
+                  className="w-100 rounded-circle"
+                  style={{objectFit: 'cover'}}
+                />
+              </div>
               <Button variant="primary" onClick={handleShow2} className="btn btn-primary position-absolute bottom-0 end-0 rounded-pill" style={{ width: '51px', height: '51px' }}>
                 <i className="fa-solid fa-camera fa-xl"></i>
               </Button>

@@ -1,4 +1,4 @@
-*:not(i) {
+*:not(.fa-solid) {
   font-family: "Raleway", sans-serif !important;
 }
 
@@ -65,18 +65,6 @@ body {
 .search {
   border-radius: 50px !important;
   background-color: $secondary !important;
-}
-
-.Icon-inside {
-  position: relative;
-}
-
-.Icon-inside i {
-  position: absolute;
-  right: 25px;
-  top: 1px;
-  padding: 10px 10px;
-  color: darken($color: $secondary, $amount: 32);
 }
 
 .icon {

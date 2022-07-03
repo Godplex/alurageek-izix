@@ -1,4 +1,4 @@
-import { Link, Navigate, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
@@ -10,6 +10,12 @@ export const Menu = () => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState([]);
+  const [search, setSearch] = useState(null);
+
+  let formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
 
   onAuthStateChanged(auth, (userFirebase) => {
     if (userFirebase) {
@@ -21,21 +27,27 @@ export const Menu = () => {
 
   useEffect(() => {
     getProducts(setProducts, setIsLoading);
-  }, [])
+  }, [search])
 
   const handleOnSelect = (item) => {
     window.location.href = `/alurageek-izix/#/admin/category/${item.category}/product/${item.id}`;
   }
 
+  const handleOnSearch = (string) => {
+    setSearch(string)
+  }
+
   const formatResult = (item) => {
     return (
       <div className="row">
-        <div className="col-2">
-          <img src={item.imageUrl} alt={item.name} className="w-100" />
+        <div className="col-2 col-md-3 col-lg-2">
+          <div className="ratio ratio-1x1" style={{ objectFit: 'cover' }}>
+            <img src={item.imageUrl} alt={item.name} className="w-100" />
+          </div>
         </div>
-        <div className="col-10">
-          <span style={{ display: 'block', textAlign: 'left' }}>Nombre: {item.name}</span>
-          <span style={{ display: 'block', textAlign: 'left' }}>Precio: {item.price}</span>
+        <div className="col-10 col-md-7 col-lg-10">
+          <span className="d-block float-left"><b>Nombre:</b> {item.name}</span>
+          <span className="d-block float-left"><b>Precio:</b> {formatter.format(item.price)}</span>
         </div>
       </div>
     )
@@ -47,11 +59,13 @@ export const Menu = () => {
         <Link to="/" className="navbar-brand">
           <img src={logo} alt="logo" className="logo" />
         </Link>
-        <div className="col-5 me-auto ms-2 d-none d-sm-block">
+        <div className="col-md-7 col-lg-5 me-auto ms-2 d-none d-sm-block">
           <ReactSearchAutocomplete
             items={products}
             styling={{ zIndex: 1000 }}
             onSelect={handleOnSelect}
+            onSearch={handleOnSearch}
+            inputDebounce={500}
             placeholder="¿Que deseas buscar?"
             showNoResultsText="Sin resultados"
             autoFocus

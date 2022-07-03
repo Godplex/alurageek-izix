@@ -317,7 +317,7 @@ export const getProductsByCategory = async (category, setProducts, setIsLoading)
     });
 }
 
-export const getSimilarProducts = async (id, setProducts, setIsLoading,category) => {
+export const getSimilarProducts = async (id, setProducts, setIsLoading, category) => {
 
   const q = query(collection(db, "products"), where("category", "==", category));
 
