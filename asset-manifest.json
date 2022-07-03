@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/alurageek-izix/static/css/main.b3e4f97f.css",
-    "main.js": "/alurageek-izix/static/js/main.31dcdeae.js",
+    "main.css": "/alurageek-izix/static/css/main.d52e16ff.css",
+    "main.js": "/alurageek-izix/static/js/main.2f1f23e2.js",
     "static/media/banner.jpg": "/alurageek-izix/static/media/banner.600254d5ef0bead20644.jpg",
     "static/media/slick.svg": "/alurageek-izix/static/media/slick.2630a3e3eab21c607e21.svg",
     "static/media/slick.eot": "/alurageek-izix/static/media/slick.a4e97f5a2a64f0ab1323.eot",
     "static/media/slick.ttf": "/alurageek-izix/static/media/slick.c94f7671dcc99dce43e2.ttf",
     "static/media/slick.woff": "/alurageek-izix/static/media/slick.295183786cd8a1389865.woff",
     "index.html": "/alurageek-izix/index.html",
-    "main.b3e4f97f.css.map": "/alurageek-izix/static/css/main.b3e4f97f.css.map",
-    "main.31dcdeae.js.map": "/alurageek-izix/static/js/main.31dcdeae.js.map"
+    "main.d52e16ff.css.map": "/alurageek-izix/static/css/main.d52e16ff.css.map",
+    "main.2f1f23e2.js.map": "/alurageek-izix/static/js/main.2f1f23e2.js.map"
   },
   "entrypoints": [
-    "static/css/main.b3e4f97f.css",
-    "static/js/main.31dcdeae.js"
+    "static/css/main.d52e16ff.css",
+    "static/js/main.2f1f23e2.js"
   ]
 }
