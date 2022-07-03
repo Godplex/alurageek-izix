@@ -24,7 +24,7 @@ export const Menu = () => {
   }, [])
 
   const handleOnSelect = (item) => {
-    window.location.href = `/#/admin/category/${item.category}/product/${item.id}`;
+    window.location.href = `/alurageek-izix/#/admin/category/${item.category}/product/${item.id}`;
   }
 
   const formatResult = (item) => {
