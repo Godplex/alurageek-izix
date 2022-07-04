@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
@@ -40,55 +40,69 @@ export const Menu = () => {
   const formatResult = (item) => {
     return (
       <div className="row">
-        <div className="col-2 col-md-3 col-lg-2">
+        <div className="col-3 col-lg-2">
           <div className="ratio ratio-1x1" style={{ objectFit: 'cover' }}>
             <img src={item.imageUrl} alt={item.name} className="w-100" />
           </div>
         </div>
-        <div className="col-10 col-md-7 col-lg-10">
-          <span className="d-block float-left"><b>Nombre:</b> {item.name}</span>
-          <span className="d-block float-left"><b>Precio:</b> {formatter.format(item.price)}</span>
+        <div className="col-9 col-lg-10">
+          <p className="mb-0 text-truncate"><b>Nombre:</b> {item.name}</p>
+          <p className="mb-0 text-truncate"><b>Precio:</b> {formatter.format(item.price)}</p>
         </div>
       </div>
     )
   }
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-white">
-      <div className="container py-2">
-        <Link to="/" className="navbar-brand">
-          <img src={logo} alt="logo" className="logo" />
-        </Link>
-        <div className="col-md-7 col-lg-5 me-auto ms-2 d-none d-sm-block">
-          <ReactSearchAutocomplete
-            items={products}
-            styling={{ zIndex: 1000 }}
-            onSelect={handleOnSelect}
-            onSearch={handleOnSearch}
-            inputDebounce={500}
-            placeholder="¿Que deseas buscar?"
-            showNoResultsText="Sin resultados"
-            autoFocus
-            formatResult={formatResult}
-          />
-        </div>
-        {user ? (
-          <button
-            className="btn btn-primary d-flex px-4 px-lg-5 py-2"
-            onClick={() => logout()}
-          >
-            Cerrar sesión
-          </button>
-        ) : (
-          <Link
-            to="/login"
-            className="btn btn-outline-primary d-flex px-4 px-lg-5 py-2"
-          >
-            Login
+    <div>
+      <nav className="navbar navbar-expand-lg navbar-light bg-white">
+        <div className="container py-2">
+          <Link to="/" className="navbar-brand m-0">
+            <img src={logo} alt="logo" className="logo" />
           </Link>
-        )}
-        <i className="fa-solid fa-magnifying-glass fa-lg fa-fw icon d-sm-block d-md-none"></i>
+          <div className="col-md-7 col-lg-5 me-auto ms-2 d-none d-md-block">
+            <ReactSearchAutocomplete
+              items={products}
+              styling={{ zIndex: 1000 }}
+              onSelect={handleOnSelect}
+              onSearch={handleOnSearch}
+              inputDebounce={500}
+              placeholder="¿Que deseas buscar?"
+              showNoResultsText="Sin resultados"
+              autoFocus
+              formatResult={formatResult}
+            />
+          </div>
+          {user ? (
+            <button
+              className="btn btn-primary d-flex px-4 px-lg-5 py-2"
+              onClick={() => logout()}
+            >
+              Cerrar sesión
+            </button>
+          ) : (
+            <Link
+              to="/login"
+              className="btn btn-outline-primary d-flex px-4 px-lg-5 py-2"
+            >
+              Login
+            </Link>
+          )}
+        </div>
+      </nav>
+      <div className="container pb-3 d-md-none d-sm-block">
+        <ReactSearchAutocomplete
+          items={products}
+          styling={{ zIndex: 1000 }}
+          onSelect={handleOnSelect}
+          onSearch={handleOnSearch}
+          inputDebounce={500}
+          placeholder="¿Que deseas buscar?"
+          showNoResultsText="Sin resultados"
+          autoFocus
+          formatResult={formatResult}
+        />
       </div>
-    </nav>
+    </div>
   );
 };

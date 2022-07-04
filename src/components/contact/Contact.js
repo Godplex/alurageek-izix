@@ -1,4 +1,5 @@
-import { errorAlert, successAlert } from "../../alerts/Alerts";
+import { send } from "@emailjs/browser";
+import { errorAlert, loadingAlert, successAlert } from "../../alerts/Alerts";
 import logo from "../../assets/logo.png";
 import { useForm } from "../../hooks/useForm";
 
@@ -14,11 +15,17 @@ export const Contact = () => {
     e.preventDefault();
 
     if (formValues.name && formValues.message) {
-      console.log(formValues);
 
-      reset();
+      loadingAlert();
 
-      successAlert("Mensaje enviado con exito!");
+      send('service_nl43b6p', 'template_uoidqks', formValues, 'user_MwVjL23I0fqf1C3NcuqWU')
+        .then(() => {
+          reset();
+          successAlert("Mensaje enviado con exito!");
+        }, (err) => {
+          errorAlert(err.text);
+        });
+
     } else {
       errorAlert("Por favor complete todos los campos.");
     }
